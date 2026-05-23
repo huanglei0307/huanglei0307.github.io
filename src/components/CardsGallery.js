@@ -1,74 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { allCards } from '../utils/cardsData';
-import '../style/CardsGallery.css';
+import React, { useState } from "react";
 
-const CardsGallery = ({ matchedCards, onCardClick }) => {
-  const [selectedClass, setSelectedClass] = useState('all');
-  
-  const filteredCards = selectedClass === 'all' 
+const CardsGallery = ({ matchedCards, cardsData, allCards }) => {
+  const [filter, setFilter] = useState("all");
+
+  const filtered = filter === "all" 
     ? allCards 
-    : allCards.filter(card => card.class === selectedClass);
-  
+    : allCards.filter(c => c.class === filter);
+
   return (
-    <div className="cards-gallery">
-      <div className="gallery-header">
-        <h3>📋 卡片库（每个类别至少10张）</h3>
-        <div className="class-filters">
-          <button 
-            className={selectedClass === 'all' ? 'active' : ''}
-            onClick={() => setSelectedClass('all')}
-          >
-            全部 ({allCards.length})
-          </button>
-          <button 
-            className={selectedClass === 'airplane' ? 'active' : ''}
-            onClick={() => setSelectedClass('airplane')}
-          >
-            ✈️ 飞机 ({allCards.filter(c => c.class === 'airplane').length})
-          </button>
-          <button 
-            className={selectedClass === 'helicopter' ? 'active' : ''}
-            onClick={() => setSelectedClass('helicopter')}
-          >
-            🚁 直升机 ({allCards.filter(c => c.class === 'helicopter').length})
-          </button>
-          <button 
-            className={selectedClass === 'airship' ? 'active' : ''}
-            onClick={() => setSelectedClass('airship')}
-          >
-            🎈 飞艇 ({allCards.filter(c => c.class === 'airship').length})
-          </button>
-        </div>
+    <div style={{ width: "100%", maxWidth: 1200, marginTop: 30, padding: 20, background: "white", borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
+      <h3>📋 卡片库 ({allCards.length} 张)</h3>
+      
+      <div style={{ display: "flex", gap: 10, margin: "15px 0", flexWrap: "wrap" }}>
+        <button onClick={() => setFilter("all")} style={{ padding: "5px 12px", background: filter === "all" ? "#007bff" : "#e9ecef", color: filter === "all" ? "white" : "#333", border: "none", borderRadius: 20, cursor: "pointer" }}>全部 ({allCards.length})</button>
+        <button onClick={() => setFilter("airplane")} style={{ padding: "5px 12px", background: filter === "airplane" ? "#007bff" : "#e9ecef", color: filter === "airplane" ? "white" : "#333", border: "none", borderRadius: 20, cursor: "pointer" }}>✈️ 飞机 ({cardsData.airplane.length})</button>
+        <button onClick={() => setFilter("helicopter")} style={{ padding: "5px 12px", background: filter === "helicopter" ? "#007bff" : "#e9ecef", color: filter === "helicopter" ? "white" : "#333", border: "none", borderRadius: 20, cursor: "pointer" }}>🚁 直升机 ({cardsData.helicopter.length})</button>
+        <button onClick={() => setFilter("airship")} style={{ padding: "5px 12px", background: filter === "airship" ? "#007bff" : "#e9ecef", color: filter === "airship" ? "white" : "#333", border: "none", borderRadius: 20, cursor: "pointer" }}>🎈 飞艇 ({cardsData.airship.length})</button>
       </div>
-      
-      {/* 匹配结果提示 */}
-      {matchedCards && matchedCards.length > 0 && (
-        <div className="match-result">
-          <h4>🔍 CLIP 匹配结果（基于分割出的物体）</h4>
-          <div className="matched-cards">
-            {matchedCards.map((card, idx) => (
-              <div key={idx} className="matched-card">
-                <span className="similarity">{Math.round(card.similarity * 100)}%</span>
-                <span className="card-text">{card.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {/* 所有卡片网格 */}
-      <div className="cards-grid">
-        {filteredCards.map(card => (
-          <div 
-            key={card.id} 
-            className="card-item"
-            onClick={() => onCardClick && onCardClick(card)}
-          >
-            <div className="card-placeholder">
-              🖼️
-            </div>
-            <div className="card-text">{card.text}</div>
-            <div className="card-class">{card.class}</div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 12 }}>
+        {filtered.map(card => (
+          <div key={card.id} style={{ background: "#f8f9fa", borderRadius: 8, padding: 10, textAlign: "center", border: matchedCards.some(m => m.id === card.id) ? "2px solid #28a745" : "none" }}>
+            <div style={{ fontSize: 32 }}>{card.class === "airplane" ? "✈️" : card.class === "helicopter" ? "🚁" : "🎈"}</div>
+            <div style={{ fontSize: 12, marginTop: 5 }}>{card.text}</div>
+            <div style={{ fontSize: 10, color: "#666", marginTop: 3 }}>{card.class}</div>
+            {matchedCards.some(m => m.id === card.id) && <div style={{ fontSize: 10, color: "#28a745", marginTop: 3 }}>✓ 匹配</div>}
           </div>
         ))}
       </div>

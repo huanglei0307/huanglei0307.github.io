@@ -1,57 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="图像分割应用" />
-    <title>YOLOv8 图像分割应用</title>
-    <style>
-      /* 简单的状态指示器 */
-      .clip-status {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background: rgba(0, 128, 0, 0.9);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 11px;
-        z-index: 9999;
-        font-family: monospace;
-        pointer-events: none;
-      }
-    </style>
+    <meta
+      name="description"
+      content="Object Segmentation Application using YOLOv8 and ONNXRUNTIME"
+    />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>YOLOv8 Object Segmentation App</title>
   </head>
   <body>
-    <noscript>您需要启用 JavaScript 才能运行此应用。</noscript>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    
-    <!-- 模拟 CLIP 状态指示器 -->
-    <div class="clip-status" id="clip-status">CLIP: 🟢 演示模式</div>
-    
-    <!-- 设置全局 mock CLIP 对象，用于 React 组件 -->
-    <script>
-      // 创建一个全局的模拟 CLIP 对象
-      window.clip = {
-        isReady: true,
-        mock: true,
-        init: async () => window.clip,
-        getTextEmbedding: async (text) => {
-          console.log("Mock CLIP: 处理文本", text);
-          return new Float32Array(512);
-        },
-        getImageEmbedding: async (imageElement) => {
-          console.log("Mock CLIP: 处理图像");
-          return new Float32Array(512);
-        }
-      };
-      
-      // 触发自定义事件，通知 React 应用 CLIP 已就绪
-      window.dispatchEvent(new CustomEvent('clip-ready', { 
-        detail: { success: true, mock: true, message: "CLIP 演示模式已就绪" }
-      }));
-      console.log("✅ 模拟 CLIP 全局对象已设置");
-    </script>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
   </body>
 </html>

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.9f1b0893.css",
-    "main.js": "/static/js/main.fafc3780.js",
+    "main.css": "/static/css/main.2f52c193.css",
+    "main.js": "/static/js/main.a12107ce.js",
     "static/js/ort-wasm-simd-threaded.jsep.wasm": "/static/js/ort-wasm-simd-threaded.jsep.wasm",
     "static/media/ort-wasm-simd-threaded.jsep.wasm": "/static/media/ort-wasm-simd-threaded.jsep.7159377c07b0033df76a.wasm",
     "static/js/ort-wasm-simd-threaded.asyncify.wasm": "/static/js/ort-wasm-simd-threaded.asyncify.wasm",
@@ -12,11 +12,11 @@
     "mask-yolov8-seg.onnx": "/mask-yolov8-seg.onnx",
     "nms-yolov8.onnx": "/nms-yolov8.onnx",
     "index.html": "/index.html",
-    "main.9f1b0893.css.map": "/static/css/main.9f1b0893.css.map",
-    "main.fafc3780.js.map": "/static/js/main.fafc3780.js.map"
+    "main.2f52c193.css.map": "/static/css/main.2f52c193.css.map",
+    "main.a12107ce.js.map": "/static/js/main.a12107ce.js.map"
   },
   "entrypoints": [
-    "static/css/main.9f1b0893.css",
-    "static/js/main.fafc3780.js"
+    "static/css/main.2f52c193.css",
+    "static/js/main.a12107ce.js"
   ]
 }

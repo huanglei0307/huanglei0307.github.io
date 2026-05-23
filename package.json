@@ -1,10 +1,10 @@
 {
   "name": "yolov8seg",
-  "homepage": "https://huanglei0307.github.io/",
+  "homepage": "https://your_github_id.github.io/",
   "version": "0.1.0",
   "dependencies": {
     "@techstark/opencv-js": "4.5.5-release.2",
-    "onnxruntime-web": "^1.26.0",
+    "onnxruntime-web": "^1.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"
