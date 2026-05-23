@@ -8,148 +8,75 @@
       name="description"
       content="Object Segmentation Application using YOLOv8 and ONNXRUNTIME"
     />
-    <!-- Content Security Policy for Transformers.js (CLIP) - 添加所有必要域名 -->
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https: http:;
-      style-src 'self' 'unsafe-inline' https: http:;
-      img-src 'self' data: blob: https: http:;
-      connect-src 'self' https: http: data: blob:;
-      worker-src 'self' blob: https: http:;
-      media-src 'self' https: http:;
-      font-src 'self' https: http: data:;
-    ">
-    <title>YOLOv8 Object Segmentation App with CLIP</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-
-    <!-- Import map for Transformers.js -->
-    <script type="importmap">
-      {
-        "imports": {
-          "@xenova/transformers": "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4/dist/transformers.js"
-        }
-      }
-    </script>
-
-    <!-- CLIP model initialization script -->
-    <script type="module">
-      import { pipeline, env } from '@xenova/transformers';
-
-      // Configure model loading - 使用 Hugging Face 官方镜像
-      env.localModelPath = 'https://huggingface.co/Xenova/';
-      env.allowLocalModels = false;
-      env.useBrowserCache = true;
-      env.remoteHost = 'https://huggingface.co';
-      env.remotePathTemplate = '/{model}/resolve/{revision}/{file}';
-
-      console.log('CLIP: Environment configured');
-
-      // Create global clip object
-      window.clip = {
-        pipeline: null,
-        isReady: false,
-        initPromise: null,
-        error: null,
-        
-        async init() {
-          if (this.pipeline) return this.pipeline;
-          if (this.initPromise) return this.initPromise;
-          
-          console.log("CLIP: Loading feature extraction pipeline...");
-          this.initPromise = (async () => {
-            try {
-              // 使用更小的模型加快下载
-              this.pipeline = await pipeline('feature-extraction', 'Xenova/clip-vit-base-patch32');
-              this.isReady = true;
-              console.log("CLIP: Model loaded successfully");
-              window.dispatchEvent(new CustomEvent('clip-ready', { detail: { success: true } }));
-              return this.pipeline;
-            } catch (error) {
-              console.error("CLIP: Failed to load model", error);
-              this.error = error;
-              this.initPromise = null;
-              window.dispatchEvent(new CustomEvent('clip-ready', { detail: { success: false, error: error.message } }));
-              throw error;
-            }
-          })();
-          return this.initPromise;
-        },
-        
-        async getTextEmbedding(text) {
-          try {
-            const extractor = await this.init();
-            if (!extractor) return null;
-            const result = await extractor(text, { pooling: 'mean', normalize: true });
-            return result.data;
-          } catch (error) {
-            console.error("CLIP: Text embedding failed", error);
-            return null;
-          }
-        },
-        
-        async getImageEmbedding(imageElement) {
-          try {
-            const extractor = await this.init();
-            if (!extractor) return null;
-            const result = await extractor(imageElement, { pooling: 'mean', normalize: true });
-            return result.data;
-          } catch (error) {
-            console.error("CLIP: Image embedding failed", error);
-            return null;
-          }
-        }
-      };
-      
-      // Auto-initialize CLIP in background
-      window.clip.init().then(() => {
-        console.log("CLIP: Background initialization complete");
-      }).catch(err => {
-        console.warn("CLIP: Background initialization failed, will retry on first use", err);
-      });
-    </script>
-
-    <!-- Status indicator -->
+    <title>YOLOv8 Object Segmentation App with CLIP (Mock Mode)</title>
     <style>
+      /* 简单的状态指示器样式 */
       .clip-status {
         position: fixed;
         bottom: 10px;
         right: 10px;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0, 128, 0, 0.9);
         color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
+        padding: 5px 10px;
+        border-radius: 5px;
         font-size: 11px;
         z-index: 9999;
         font-family: monospace;
-      }
-      .clip-status.ready {
-        background: rgba(0,128,0,0.8);
-      }
-      .clip-status.error {
-        background: rgba(255,0,0,0.8);
-      }
-      .clip-status.loading {
-        background: rgba(0,0,0,0.7);
+        pointer-events: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
       }
     </style>
-    <div class="clip-status loading" id="clip-status">CLIP: loading...</div>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    
+    <!-- CLIP 状态指示器（模拟模式） -->
+    <div class="clip-status" id="clip-status">CLIP: 🟢 演示模式 (模拟匹配)</div>
+    
+    <!-- 设置全局 CLIP 对象（模拟模式，供 React 组件使用） -->
     <script>
-      window.addEventListener('clip-ready', (e) => {
-        const status = document.getElementById('clip-status');
-        if (e.detail && e.detail.success) {
-          status.textContent = 'CLIP: ✅ ready';
-          status.className = 'clip-status ready';
-        } else if (e.detail && e.detail.error) {
-          status.textContent = 'CLIP: ❌ model failed - will retry on use';
-          status.className = 'clip-status error';
-        } else {
-          status.textContent = 'CLIP: ✅ ready';
-          status.className = 'clip-status ready';
+      // 创建全局模拟 CLIP 对象
+      window.clip = {
+        isReady: true,
+        mock: true,
+        init: async () => {
+          console.log("Mock CLIP: init called");
+          return window.clip;
+        },
+        getTextEmbedding: async (text) => {
+          console.log("Mock CLIP: getTextEmbedding for:", text);
+          // 返回随机 512 维向量
+          const embedding = new Float32Array(512);
+          for (let i = 0; i < 512; i++) {
+            embedding[i] = Math.random() * 2 - 1;
+          }
+          const norm = Math.sqrt(embedding.reduce((sum, v) => sum + v * v, 0));
+          for (let i = 0; i < 512; i++) {
+            embedding[i] /= norm;
+          }
+          return embedding;
+        },
+        getImageEmbedding: async (imageElement) => {
+          console.log("Mock CLIP: getImageEmbedding");
+          const embedding = new Float32Array(512);
+          for (let i = 0; i < 512; i++) {
+            embedding[i] = Math.random() * 2 - 1;
+          }
+          const norm = Math.sqrt(embedding.reduce((sum, v) => sum + v * v, 0));
+          for (let i = 0; i < 512; i++) {
+            embedding[i] /= norm;
+          }
+          return embedding;
         }
-      });
+      };
+      
+      // 触发就绪事件
+      window.dispatchEvent(new CustomEvent('clip-ready', { 
+        detail: { success: true, mock: true, message: "CLIP 演示模式已就绪" }
+      }));
+      
+      console.log("✅ 模拟 CLIP 已就绪 (演示模式)");
     </script>
   </body>
 </html>

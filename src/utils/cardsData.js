@@ -1,6 +1,6 @@
 // src/utils/cardsData.js
-
 // 每个类别的卡片（至少10张）
+
 export const cardsData = {
   airplane: [
     { id: 1, text: "airplane flying in blue sky" },
@@ -46,3 +46,13 @@ export const allCards = [
   ...cardsData.helicopter.map(c => ({ ...c, class: 'helicopter' })),
   ...cardsData.airship.map(c => ({ ...c, class: 'airship' }))
 ];
+
+// 获取卡片总数
+export const getTotalCardsCount = () => {
+  return allCards.length;
+};
+
+// 按类别获取卡片
+export const getCardsByClass = (className) => {
+  return cardsData[className] || [];
+};
