@@ -3,6 +3,7 @@
   "homepage": "https://your_github_id.github.io/",
   "version": "0.1.0",
   "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
     "@techstark/opencv-js": "4.5.5-release.2",
     "onnxruntime-web": "^1.14.0",
     "react": "^18.2.0",
