@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e8ae399f.css",
+    "main.js": "/static/js/main.1a6211e4.js",
+    "model.onnx": "/model.onnx",
+    "static/js/ort-wasm-simd.wasm": "/static/js/ort-wasm-simd.wasm",
+    "static/js/ort-wasm-simd-threaded.wasm": "/static/js/ort-wasm-simd-threaded.wasm",
+    "static/js/ort-wasm.wasm": "/static/js/ort-wasm.wasm",
+    "static/js/ort-wasm-threaded.wasm": "/static/js/ort-wasm-threaded.wasm",
+    "mask-yolov8-seg.onnx": "/mask-yolov8-seg.onnx",
+    "nms-yolov8.onnx": "/nms-yolov8.onnx",
+    "index.html": "/index.html",
+    "main.e8ae399f.css.map": "/static/css/main.e8ae399f.css.map",
+    "main.1a6211e4.js.map": "/static/js/main.1a6211e4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e8ae399f.css",
+    "static/js/main.1a6211e4.js"
+  ]
+}
