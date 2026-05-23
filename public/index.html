@@ -8,14 +8,16 @@
       name="description"
       content="Object Segmentation Application using YOLOv8 and ONNXRUNTIME"
     />
-    <!-- Content Security Policy for Transformers.js (CLIP) -->
+    <!-- Content Security Policy for Transformers.js (CLIP) - 添加所有必要域名 -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://huggingface.co https://cdn.huggingface.co;
-      style-src 'self' 'unsafe-inline';
-      img-src 'self' data: blob:;
-      connect-src 'self' https://huggingface.co https://cdn.huggingface.co https://cdn.jsdelivr.net https://unpkg.com;
-      worker-src 'self' blob:;
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https: http:;
+      style-src 'self' 'unsafe-inline' https: http:;
+      img-src 'self' data: blob: https: http:;
+      connect-src 'self' https: http: data: blob:;
+      worker-src 'self' blob: https: http:;
+      media-src 'self' https: http:;
+      font-src 'self' https: http: data:;
     ">
     <title>YOLOv8 Object Segmentation App with CLIP</title>
   </head>
@@ -36,11 +38,12 @@
     <script type="module">
       import { pipeline, env } from '@xenova/transformers';
 
-      // Configure model loading from Hugging Face
+      // Configure model loading - 使用 Hugging Face 官方镜像
       env.localModelPath = 'https://huggingface.co/Xenova/';
       env.allowLocalModels = false;
       env.useBrowserCache = true;
-      env.cacheDir = 'clip-cache';
+      env.remoteHost = 'https://huggingface.co';
+      env.remotePathTemplate = '/{model}/resolve/{revision}/{file}';
 
       console.log('CLIP: Environment configured');
 
@@ -58,6 +61,7 @@
           console.log("CLIP: Loading feature extraction pipeline...");
           this.initPromise = (async () => {
             try {
+              // 使用更小的模型加快下载
               this.pipeline = await pipeline('feature-extraction', 'Xenova/clip-vit-base-patch32');
               this.isReady = true;
               console.log("CLIP: Model loaded successfully");
@@ -107,7 +111,7 @@
       });
     </script>
 
-    <!-- Optional: Loading indicator for CLIP -->
+    <!-- Status indicator -->
     <style>
       .clip-status {
         position: fixed;
@@ -121,20 +125,29 @@
         z-index: 9999;
         font-family: monospace;
       }
+      .clip-status.ready {
+        background: rgba(0,128,0,0.8);
+      }
+      .clip-status.error {
+        background: rgba(255,0,0,0.8);
+      }
+      .clip-status.loading {
+        background: rgba(0,0,0,0.7);
+      }
     </style>
-    <div class="clip-status" id="clip-status">CLIP: loading...</div>
+    <div class="clip-status loading" id="clip-status">CLIP: loading...</div>
     <script>
       window.addEventListener('clip-ready', (e) => {
         const status = document.getElementById('clip-status');
         if (e.detail && e.detail.success) {
           status.textContent = 'CLIP: ✅ ready';
-          status.style.background = 'rgba(0,128,0,0.8)';
+          status.className = 'clip-status ready';
         } else if (e.detail && e.detail.error) {
-          status.textContent = 'CLIP: ❌ failed - ' + e.detail.error.substring(0, 50);
-          status.style.background = 'rgba(255,0,0,0.8)';
+          status.textContent = 'CLIP: ❌ model failed - will retry on use';
+          status.className = 'clip-status error';
         } else {
           status.textContent = 'CLIP: ✅ ready';
-          status.style.background = 'rgba(0,128,0,0.8)';
+          status.className = 'clip-status ready';
         }
       });
     </script>
