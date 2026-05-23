@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.9f1b0893.css",
+    "main.css": "/static/css/main.89b25386.css",
     "main.js": "/static/js/main.fafc3780.js",
     "static/js/ort-wasm-simd-threaded.jsep.wasm": "/static/js/ort-wasm-simd-threaded.jsep.wasm",
     "static/media/ort-wasm-simd-threaded.jsep.wasm": "/static/media/ort-wasm-simd-threaded.jsep.7159377c07b0033df76a.wasm",
@@ -12,11 +12,11 @@
     "mask-yolov8-seg.onnx": "/mask-yolov8-seg.onnx",
     "nms-yolov8.onnx": "/nms-yolov8.onnx",
     "index.html": "/index.html",
-    "main.9f1b0893.css.map": "/static/css/main.9f1b0893.css.map",
+    "main.89b25386.css.map": "/static/css/main.89b25386.css.map",
     "main.fafc3780.js.map": "/static/js/main.fafc3780.js.map"
   },
   "entrypoints": [
-    "static/css/main.9f1b0893.css",
+    "static/css/main.89b25386.css",
     "static/js/main.fafc3780.js"
   ]
 }
