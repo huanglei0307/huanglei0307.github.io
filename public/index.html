@@ -8,33 +8,135 @@
       name="description"
       content="Object Segmentation Application using YOLOv8 and ONNXRUNTIME"
     />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>YOLOv8 Object Segmentation App</title>
+    <!-- Content Security Policy for Transformers.js (CLIP) -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://huggingface.co https://cdn.huggingface.co;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: blob:;
+      connect-src 'self' https://huggingface.co https://cdn.huggingface.co https://cdn.jsdelivr.net https://unpkg.com;
+      worker-src 'self' blob:;
+    ">
+    <title>YOLOv8 Object Segmentation App with CLIP</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <!-- Import map for Transformers.js -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@xenova/transformers": "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4/dist/transformers.js"
+        }
+      }
+    </script>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- CLIP model initialization script -->
+    <script type="module">
+      import { pipeline, env } from '@xenova/transformers';
+
+      // Configure model loading from Hugging Face
+      env.localModelPath = 'https://huggingface.co/Xenova/';
+      env.allowLocalModels = false;
+      env.useBrowserCache = true;
+      env.cacheDir = 'clip-cache';
+
+      console.log('CLIP: Environment configured');
+
+      // Create global clip object
+      window.clip = {
+        pipeline: null,
+        isReady: false,
+        initPromise: null,
+        error: null,
+        
+        async init() {
+          if (this.pipeline) return this.pipeline;
+          if (this.initPromise) return this.initPromise;
+          
+          console.log("CLIP: Loading feature extraction pipeline...");
+          this.initPromise = (async () => {
+            try {
+              this.pipeline = await pipeline('feature-extraction', 'Xenova/clip-vit-base-patch32');
+              this.isReady = true;
+              console.log("CLIP: Model loaded successfully");
+              window.dispatchEvent(new CustomEvent('clip-ready', { detail: { success: true } }));
+              return this.pipeline;
+            } catch (error) {
+              console.error("CLIP: Failed to load model", error);
+              this.error = error;
+              this.initPromise = null;
+              window.dispatchEvent(new CustomEvent('clip-ready', { detail: { success: false, error: error.message } }));
+              throw error;
+            }
+          })();
+          return this.initPromise;
+        },
+        
+        async getTextEmbedding(text) {
+          try {
+            const extractor = await this.init();
+            if (!extractor) return null;
+            const result = await extractor(text, { pooling: 'mean', normalize: true });
+            return result.data;
+          } catch (error) {
+            console.error("CLIP: Text embedding failed", error);
+            return null;
+          }
+        },
+        
+        async getImageEmbedding(imageElement) {
+          try {
+            const extractor = await this.init();
+            if (!extractor) return null;
+            const result = await extractor(imageElement, { pooling: 'mean', normalize: true });
+            return result.data;
+          } catch (error) {
+            console.error("CLIP: Image embedding failed", error);
+            return null;
+          }
+        }
+      };
+      
+      // Auto-initialize CLIP in background
+      window.clip.init().then(() => {
+        console.log("CLIP: Background initialization complete");
+      }).catch(err => {
+        console.warn("CLIP: Background initialization failed, will retry on first use", err);
+      });
+    </script>
+
+    <!-- Optional: Loading indicator for CLIP -->
+    <style>
+      .clip-status {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        z-index: 9999;
+        font-family: monospace;
+      }
+    </style>
+    <div class="clip-status" id="clip-status">CLIP: loading...</div>
+    <script>
+      window.addEventListener('clip-ready', (e) => {
+        const status = document.getElementById('clip-status');
+        if (e.detail && e.detail.success) {
+          status.textContent = 'CLIP: ✅ ready';
+          status.style.background = 'rgba(0,128,0,0.8)';
+        } else if (e.detail && e.detail.error) {
+          status.textContent = 'CLIP: ❌ failed - ' + e.detail.error.substring(0, 50);
+          status.style.background = 'rgba(255,0,0,0.8)';
+        } else {
+          status.textContent = 'CLIP: ✅ ready';
+          status.style.background = 'rgba(0,128,0,0.8)';
+        }
+      });
+    </script>
   </body>
 </html>
