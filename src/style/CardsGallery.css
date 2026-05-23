@@ -1,0 +1,112 @@
+.cards-gallery {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.gallery-header {
+  margin-bottom: 20px;
+}
+
+.class-filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.class-filters button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.class-filters button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-placeholder {
+  width: 100%;
+  height: 120px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  word-break: break-word;
+}
+
+.card-class {
+  font-size: 12px;
+  color: #666;
+}
+
+.match-result {
+  background: #e8f4fd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.matched-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.matched-card {
+  background: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.matched-card .similarity {
+  background: #28a745;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+}
