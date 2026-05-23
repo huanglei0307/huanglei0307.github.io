@@ -1,5 +1,5 @@
-// src/utils/cosineSimilarity.ts
-export function cosineSimilarity(vecA: number[], vecB: number[]): number {
+// src/utils/cosineSimilarity.js
+export function cosineSimilarity(vecA, vecB) {
     let dotProduct = 0;
     let normA = 0;
     let normB = 0;

@@ -1,33 +1,21 @@
-// src/hooks/useCardSearch.ts
+// src/hooks/useCardSearch.js
 import { useState, useRef, useEffect } from 'react';
 import { cosineSimilarity } from '../utils/cosineSimilarity';
 
-export interface ICard {
-    id: number;
-    text: string;
-    class: string;
-}
-
-export interface IProcessedCard extends ICard {
-    score: number;
-    embedding?: number[];
-    isVisible: boolean;
-}
-
-export const useCardSearch = (initialCards: ICard[]) => { 
-    const [cards, setCards] = useState<IProcessedCard[]>(
+export const useCardSearch = (initialCards) => { 
+    const [cards, setCards] = useState(
         initialCards.map(card => ({ ...card, score: 0, isVisible: true }))
     );
     
-    const [imageEmbedding, setImageEmbedding] = useState<number[] | null>(null);
+    const [imageEmbedding, setImageEmbedding] = useState(null);
     const [ready, setReady] = useState(false);
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
     
-    const workerRef = useRef<Worker | null>(null);
+    const workerRef = useRef(null);
 
     useEffect(() => {
-        workerRef.current = new Worker(new URL('../workers/search.worker.ts', import.meta.url), {
+        workerRef.current = new Worker(new URL('../workers/search.worker.js', import.meta.url), {
             type: 'module'
         });
 
@@ -91,7 +79,7 @@ export const useCardSearch = (initialCards: ICard[]) => {
 
     }, [imageEmbedding]);
 
-    const searchByImage = (file: File) => {
+    const searchByImage = (file) => {
         workerRef.current?.postMessage({ type: 'image', data: file });
     };
 

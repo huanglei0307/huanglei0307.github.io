@@ -1,4 +1,4 @@
-// src/workers/search.worker.ts
+// src/workers/search.worker.js
 import { 
     env, 
     AutoTokenizer, 
@@ -13,21 +13,15 @@ env.allowRemoteModels = true;
 
 const MODEL_ID = 'Xenova/siglip-base-patch16-224';
 
-interface ICard {
-    id: number;
-    text: string;
-    class: string;
-}
-
 class SiglipService {
-    static tokenizer: any = null;
-    static processor: any = null;
-    static textModel: any = null;
-    static visionModel: any = null;
+    static tokenizer = null;
+    static processor = null;
+    static textModel = null;
+    static visionModel = null;
 
-    static async init(progress_callback?: (data: any) => void) {
+    static async init(progress_callback) {
         if (!this.tokenizer) {
-            const options = { device: 'wasm', dtype: 'q8' } as const;
+            const options = { device: 'wasm', dtype: 'q8' };
 
             this.tokenizer = await AutoTokenizer.from_pretrained(MODEL_ID, { progress_callback });
             this.processor = await AutoProcessor.from_pretrained(MODEL_ID, { progress_callback });
@@ -46,10 +40,10 @@ self.addEventListener('message', async (event) => {
                 self.postMessage({ type: 'progress', data: msg });
             });
 
-            const items: ICard[] = data;
-            const embeddings: Record<number, number[]> = {};
+            const items = data;
+            const embeddings = {};
 
-            const descriptions = items.map((item: ICard) => item.text);
+            const descriptions = items.map((item) => item.text);
             
             const text_inputs = await SiglipService.tokenizer(descriptions, { 
                 padding: 'max_length', 

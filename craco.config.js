@@ -20,8 +20,6 @@ module.exports = {
         path: false,
         crypto: false,
       };
-      // 添加对 .ts 和 .tsx 的支持
-      config.resolve.extensions = [...(config.resolve.extensions || []), '.ts', '.tsx'];
       return config;
     },
   },

@@ -1,12 +1,4 @@
-// src/data/cardsData.ts
-export interface ICard {
-    id: number;
-    text: string;
-    class: string;
-}
-
-export const CARDS_DATA: ICard[] = [
-    // Airplane cards (10)
+export const CARDS_DATA = [
     { id: 1, text: "airplane flying in blue sky", class: "airplane" },
     { id: 2, text: "airplane taking off from runway", class: "airplane" },
     { id: 3, text: "airplane landing at airport", class: "airplane" },
@@ -17,8 +9,6 @@ export const CARDS_DATA: ICard[] = [
     { id: 8, text: "airplane flying over mountains", class: "airplane" },
     { id: 9, text: "airplane in stormy weather", class: "airplane" },
     { id: 10, text: "airplane at night with lights", class: "airplane" },
-    
-    // Helicopter cards (10)
     { id: 11, text: "helicopter hovering in air", class: "helicopter" },
     { id: 12, text: "helicopter landing on helipad", class: "helicopter" },
     { id: 13, text: "helicopter flying over city", class: "helicopter" },
@@ -29,8 +19,6 @@ export const CARDS_DATA: ICard[] = [
     { id: 18, text: "helicopter carrying cargo", class: "helicopter" },
     { id: 19, text: "helicopter flying low", class: "helicopter" },
     { id: 20, text: "helicopter at airshow", class: "helicopter" },
-    
-    // Airship cards (10)
     { id: 21, text: "airship floating in blue sky", class: "airship" },
     { id: 22, text: "airship with advertising banner", class: "airship" },
     { id: 23, text: "airship flying over stadium", class: "airship" },
