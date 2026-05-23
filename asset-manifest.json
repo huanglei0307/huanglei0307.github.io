@@ -10,8 +10,8 @@
     "static/js/ort-wasm-simd-threaded.wasm": "/static/js/ort-wasm-simd-threaded.wasm",
     "static/media/ort.bundle.min.mjs": "/static/media/ort.bundle.min.ae6e9930b3fc147d9d9b.mjs",
     "mask-yolov8-seg.onnx": "/mask-yolov8-seg.onnx",
-    "nms-yolov8.onnx": "/nms-yolov8.onnx",
     "index.html": "/index.html",
+    "nms-yolov8.onnx": "/nms-yolov8.onnx",
     "main.9f1b0893.css.map": "/static/css/main.9f1b0893.css.map",
     "main.dc379204.js.map": "/static/js/main.dc379204.js.map"
   },
