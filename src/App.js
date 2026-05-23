@@ -1,13 +1,4 @@
-import React from "react";
 
-const App = () => {
-    return (
-        <div>
-            Пример onnx
-        </div>
-    );
-};
-export default App;
 
 
 
