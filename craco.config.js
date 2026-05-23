@@ -5,7 +5,6 @@ module.exports = {
     plugins: {
       add: [
         new CopyPlugin({
-          // Use copy plugin to copy *.wasm to output folder.
           patterns: [
             { from: "node_modules/onnxruntime-web/dist/*.wasm", to: "static/js/[name][ext]" },
             { from: './public/model/model.onnx', to: '[name][ext]'},
@@ -16,12 +15,13 @@ module.exports = {
       ],
     },
     configure: (config) => {
-      // set resolve.fallback for opencv.js
       config.resolve.fallback = {
         fs: false,
         path: false,
         crypto: false,
       };
+      // 添加对 .ts 和 .tsx 的支持
+      config.resolve.extensions = [...(config.resolve.extensions || []), '.ts', '.tsx'];
       return config;
     },
   },
